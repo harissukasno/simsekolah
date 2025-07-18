@@ -1,0 +1,38 @@
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    restart: always
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/usr/src/app/src    
+    networks:
+      - universal-network
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    environment:
+      ENV_VARIABLE: development
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_BASE_URL}
+    restart: always
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - backend
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    command: npm run dev
+    networks:
+      - universal-network
+
+networks:
+  universal-network:        
+    external: true

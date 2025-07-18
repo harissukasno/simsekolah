@@ -1,0 +1,13 @@
+.env
+.git
+.gitignore
+.vscode
+Dockerfile
+docker-compose.yml
+node_modules
+npm-debug.log
+README.md
+
+# Ignore node_modules in the root directory
+./frontend/node_modules
+./backend/node_modules

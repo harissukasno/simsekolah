@@ -1,0 +1,59 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: simsekolah-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: simsekolah
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_TCP_PORT: 3306
+    ports:
+      - "3306:3306"
+    volumes:
+      - simsekolah:/var/lib/mysql
+    networks:
+      - simsekolahNetwork      
+    restart: always
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: prod.Dockerfile
+    depends_on:
+      - mysql
+    restart: always
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/usr/src/app/src    
+    networks:
+      - simsekolahNetwork
+
+  frontend:
+    container_name: frontend
+    build: 
+      context: ./frontend
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public    
+    networks:
+      - simsekolahNetwork
+
+volumes:
+  simsekolah:
+    external: true
+
+networks:
+  simsekolahNetwork:
+    driver: bridge
+    external: true
