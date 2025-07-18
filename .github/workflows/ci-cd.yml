@@ -77,11 +77,13 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./backend
+          file: ./backend/dev.Dockerfile
           push: true
           tags: ${{ env.DOCKERHUB_USERNAME }}/sekolah-backend:latest
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
+          file: ./frontend/dev.Dockerfile
           push: true
           tags: ${{ env.DOCKERHUB_USERNAME }}/sekolah-frontend:latest
