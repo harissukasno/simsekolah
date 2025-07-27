@@ -5,9 +5,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { SiswaModule } from './siswa/siswa.module';
 import { GuruModule } from './guru/guru.module';
-import { KelasController } from './kelas/kelas.controller';
-import { KelasService } from './kelas/kelas.service';
 import { KelasModule } from './kelas/kelas.module';
+import { AbsensiModule } from './absensi/absensi.module';
 
 @Module({
   imports: [
@@ -22,9 +21,9 @@ import { KelasModule } from './kelas/kelas.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    UsersModule,AuthModule,SiswaModule,GuruModule, KelasModule,
+    UsersModule, AuthModule, SiswaModule, GuruModule, KelasModule, AbsensiModule,
   ],
-  controllers: [KelasController],
-  providers: [KelasService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
