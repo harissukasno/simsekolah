@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import Link from "next/link";
+import React, { useState } from "react"
 
 export function NavUser({
   user,
@@ -41,10 +42,25 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogout = () => {    
-    localStorage.removeItem("access_token")
-    window.location.href = "/login"
+  const handleLogout = async() => {    
+    try {        
+        const response = await fetch(`http://localhost:4000/auth/logout`, {
+            method: 'POST',            
+        });
+
+        if (response.ok) {
+            // REMOVE TOKEN IN LOCAL STORAGE
+            localStorage.removeItem("access_token")
+            window.location.href = "/login"
+        } else {
+            setError('Invalid email or password');            
+        }        
+        
+    } catch (error) {
+        
+    }    
   }
 
   return (

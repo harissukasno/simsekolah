@@ -35,17 +35,17 @@ describe('AuthController', () => {
 
   describe('signIn', () => {
     it('should return an access token on successful login', async () => {
-      const loginDto: LoginDto = { username: 'testuser', password: 'password123' };
+      const loginDto: LoginDto = { username: 'testuser', password_hash: 'password123' };
       const expectedToken = { access_token: 'mockAccessToken' };
       mockAuthService.signIn.mockResolvedValue(expectedToken);
 
       const result = await authController.signIn(loginDto);
       expect(result).toEqual(expectedToken);
-      expect(mockAuthService.signIn).toHaveBeenCalledWith(loginDto.username, loginDto.password);
+      expect(mockAuthService.signIn).toHaveBeenCalledWith(loginDto.username, loginDto.password_hash);
     });
 
     it('should throw UnauthorizedException on invalid credentials', async () => {
-      const loginDto: LoginDto = { username: 'testuser', password: 'wrongpassword' };
+      const loginDto: LoginDto = { username: 'testuser', password_hash: 'wrongpassword' };
       mockAuthService.signIn.mockRejectedValue(new UnauthorizedException('Invalid credentials'));
 
       await expect(authController.signIn(loginDto)).rejects.toThrow(UnauthorizedException);
