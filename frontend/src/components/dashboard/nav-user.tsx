@@ -29,6 +29,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
+import Link from "next/link";
+
 export function NavUser({
   user,
 }: {
@@ -39,6 +41,11 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+
+  const handleLogout = () => {    
+    localStorage.removeItem("access_token")
+    window.location.href = "/login"
+  }
 
   return (
     <SidebarMenu>
@@ -86,7 +93,13 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <IconLogout />
-              Log out
+              <button
+                type="button"
+                className="w-full text-left bg-transparent border-0 p-0 m-0 cursor-pointer"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
