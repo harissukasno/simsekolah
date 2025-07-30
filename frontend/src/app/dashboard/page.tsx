@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/sidebar"
 
 import data from "./data.json"
-import { useRouter } from "next/navigation"
 import React, { useState, useEffect } from "react";
 
 // Asumsikan fungsi getRoleFromToken() Anda mengambil peran dari JWT di localStorage
@@ -35,8 +34,7 @@ const getRoleFromToken = (): string | null => {
   return null; // Akan mengembalikan null saat di server atau jika tidak ada token
 };
 
-export default function Page() {
-  const router = useRouter();   
+export default function Page() {  
   
   // State untuk menyimpan komponen sidebar yang akan dirender.
   // Inisialisasi dengan null atau komponen loading/default untuk render awal server.
@@ -61,15 +59,7 @@ export default function Page() {
 
     // Perbarui state dengan komponen yang telah ditentukan
     setCurrentSidebarComponent(() => selectedComponent);
-  }, []); // Array dependensi kosong memastikan efek ini hanya berjalan sekali setelah mount
-  
-  let SidebarComponent = SidebarGuru // default
-  if (typeof window !== "undefined") {
-    const role = getRoleFromToken()
-    if (role === "siswa") {SidebarComponent = SidebarSiswa}
-    else if (role === "guru") {SidebarComponent = SidebarGuru}
-    else if (role === "super_admin") {SidebarComponent = SidebarAdmin}
-  }
+  }, []); // Array dependensi kosong memastikan efek ini hanya berjalan sekali setelah mount  
 
   return (
     <SidebarProvider

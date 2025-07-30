@@ -17,8 +17,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
+  DropdownMenuItem,  
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -29,7 +28,6 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-import Link from "next/link";
 import React, { useState } from "react"
 
 export function NavUser({
@@ -53,9 +51,7 @@ export function NavUser({
               'Authorization': `Bearer ${token}`,
           },
           
-      });
-
-      const data = await response.json();            
+      });          
 
       if (response.ok) {
           // REMOVE TOKEN IN LOCAL STORAGE
