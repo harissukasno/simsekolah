@@ -8,7 +8,7 @@ export class LoginDto {
     @IsString()
     @IsNotEmpty()
     @MinLength(6) // Assuming a minimum password length
-    password: string;
+    password_hash: string;
 }
 
 export class ChangePasswordDto {

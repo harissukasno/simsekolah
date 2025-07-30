@@ -29,6 +29,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
+import Link from "next/link";
+import React, { useState } from "react"
+
 export function NavUser({
   user,
 }: {
@@ -39,6 +42,33 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLogout = async() => {    
+    try {   
+      const token = localStorage.getItem('access_token');           
+      const response = await fetch(`http://localhost:4000/auth/logout`, {
+          method: 'POST',            
+          headers: {              
+              'Authorization': `Bearer ${token}`,
+          },
+          
+      });
+
+      const data = await response.json();            
+
+      if (response.ok) {
+          // REMOVE TOKEN IN LOCAL STORAGE
+          localStorage.removeItem("access_token")
+          window.location.href = "/login"
+      } else {
+          setError('Invalid email or password');            
+      }        
+        
+    } catch (error) {
+        
+    }    
+  }
 
   return (
     <SidebarMenu>
@@ -47,7 +77,7 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
@@ -84,9 +114,9 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
               <IconLogout />
-              Log out
+              <span>Logout</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

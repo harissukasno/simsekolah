@@ -3,6 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { LoginDto, ChangePasswordDto } from './auth.dto';
 import { UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { AuthGuard } from './auth.guard';
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -14,7 +15,18 @@ describe('AuthController', () => {
     changePassword: jest.fn(),
   };
 
+  // Mock AuthGuard
+  // Kita membuat mock yang akan selalu mengembalikan true untuk canActivate
+  // Ini memastikan bahwa guard tidak memblokir tes controller.
+  const mockAuthGuard = {
+    canActivate: jest.fn((context) => true),
+  };
+
   beforeEach(async () => {
+
+    // Reset semua mock sebelum setiap tes
+    jest.clearAllMocks();
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
       providers: [
@@ -23,7 +35,12 @@ describe('AuthController', () => {
           useValue: mockAuthService,
         },
       ],
-    }).compile();
+    })
+    // Override AuthGuard dengan mock kita
+    // Ini adalah kunci untuk menyelesaikan masalah dependensi JwtService
+    .overrideGuard(AuthGuard)
+    .useValue(mockAuthGuard)
+    .compile();
 
     authController = module.get<AuthController>(AuthController);
     authService = module.get<AuthService>(AuthService);
@@ -35,17 +52,17 @@ describe('AuthController', () => {
 
   describe('signIn', () => {
     it('should return an access token on successful login', async () => {
-      const loginDto: LoginDto = { username: 'testuser', password: 'password123' };
+      const loginDto: LoginDto = { username: 'testuser', password_hash: 'password123' };
       const expectedToken = { access_token: 'mockAccessToken' };
       mockAuthService.signIn.mockResolvedValue(expectedToken);
 
       const result = await authController.signIn(loginDto);
       expect(result).toEqual(expectedToken);
-      expect(mockAuthService.signIn).toHaveBeenCalledWith(loginDto.username, loginDto.password);
+      expect(mockAuthService.signIn).toHaveBeenCalledWith(loginDto.username, loginDto.password_hash);
     });
 
     it('should throw UnauthorizedException on invalid credentials', async () => {
-      const loginDto: LoginDto = { username: 'testuser', password: 'wrongpassword' };
+      const loginDto: LoginDto = { username: 'testuser', password_hash: 'wrongpassword' };
       mockAuthService.signIn.mockRejectedValue(new UnauthorizedException('Invalid credentials'));
 
       await expect(authController.signIn(loginDto)).rejects.toThrow(UnauthorizedException);

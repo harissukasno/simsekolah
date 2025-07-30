@@ -1,18 +1,30 @@
 'use client';
+
+import type React from "react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 
-export default function Home() {  
 
+export default function Home(){
+  
   const router = useRouter();
 
-  useEffect(() => {
-    // Redirect to the login page when the user visits the home page
-    router.push("/dashboard");
-  }, []);  
-  return (
-    <div>
+  const [token, setToken] = useState<string | null>(null);
 
-    </div>
+  useEffect(() => {
+    const storedToken = localStorage.getItem("access_token");
+    if (!storedToken) {
+      router.push("/login");
+    } else {
+      setToken(storedToken);
+      router.push("/dashboard");
+    }
+  },[router]);
+  return (
+    <>
+      {token && (
+        <></>
+      )}
+    </>
   );
 }

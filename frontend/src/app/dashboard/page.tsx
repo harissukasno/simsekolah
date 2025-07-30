@@ -1,4 +1,5 @@
-// import { AppSidebar } from "@/components/dashboard/app-sidebar"
+'use client'
+
 import { SidebarSiswa } from "@/components/dashboard/sidebar-siswa"
 import { SidebarGuru } from "@/components/dashboard/sidebar-guru"
 import { ChartAreaInteractive } from "@/components/dashboard/chart-area-interactive"
@@ -11,8 +12,30 @@ import {
 } from "@/components/ui/sidebar"
 
 import data from "./data.json"
+import { useRouter } from "next/navigation"
+
+function getRoleFromToken(): string | null {
+  if (typeof window === "undefined") return null
+  const token = localStorage.getItem("access_token")
+  if (!token) return null
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]))    
+    return payload.role || null
+  } catch {
+    return null
+  }
+}
 
 export default function Page() {
+  const router = useRouter();    
+  
+  let SidebarComponent = SidebarGuru // default
+  if (typeof window !== "undefined") {
+    const role = getRoleFromToken()
+    if (role === "siswa") {SidebarComponent = SidebarSiswa}
+    else if (role === "guru") {SidebarComponent = SidebarGuru}
+  }
+
   return (
     <SidebarProvider
       style={
@@ -22,9 +45,7 @@ export default function Page() {
         } as React.CSSProperties
       }
     >
-      {/* <AppSidebar variant="inset" /> */}
-      {/* <SidebarSiswa variant="inset" /> */}
-      <SidebarGuru variant="inset" />
+      <SidebarComponent variant="inset" />
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">
