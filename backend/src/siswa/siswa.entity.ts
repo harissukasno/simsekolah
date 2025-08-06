@@ -64,8 +64,9 @@ export class Siswa {
     default: 'aktif',
   })
   status: 'aktif' | 'lulus' | 'pindah' | 'dropout';
-    @Column({ type: 'text', nullable: true })
-  foto: string;
+  
+  @Column({ type: 'text', nullable: true })
+  foto_url: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
