@@ -2,21 +2,17 @@
 
 import * as React from "react"
 import {
-  IconCamera,
-  IconChartBar,
+  IconCamera,  
   IconDashboard,
   IconDatabase,
   IconFileAi,
   IconFileDescription,
-  IconFileWord,
-  IconFolder,
+  IconFileWord,  
   IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
+  IconInnerShadowTop,  
   IconReport,
   IconSearch,
-  IconSettings,
-  IconUsers,
+  IconSettings,  
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/components/dashboard/nav-main"
