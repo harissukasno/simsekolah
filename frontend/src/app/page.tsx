@@ -1,30 +1,29 @@
-'use client';
+'use client'
 
-import type React from "react";
-import { useRouter } from "next/navigation";
-import { useEffect,useState } from "react";
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-
-export default function Home(){
-  
-  const router = useRouter();
-
-  const [token, setToken] = useState<string | null>(null);
+export default function Home() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("access_token");
-    if (!storedToken) {
-      router.push("/login");
-    } else {
-      setToken(storedToken);
-      router.push("/dashboard");
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('access_token')
+
+      if (token) {
+        router.replace('/dashboard')
+      } else {
+        router.replace('/login')
+      }
+
+      setLoading(false)
     }
-  },[router]);
-  return (
-    <>
-      {token && (
-        <></>
-      )}
-    </>
-  );
+  }, [router])
+
+  if (loading) {
+    return <p>Redirecting...</p> // Atau spinner jika mau
+  }
+
+  return null
 }
