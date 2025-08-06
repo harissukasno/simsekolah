@@ -1,6 +1,8 @@
 // app/dashboard/page.tsx
-import { DashboardClient } from './DashboardClient'
+import dynamic from 'next/dynamic';
 
-export default function DashboardPage() {
-  return <DashboardClient />
-}
+const DynamicDashboardClient = dynamic(() => import('./DashboardClient').then(mod => mod.DashboardClient), {
+  ssr: false,
+});
+
+export default DynamicDashboardClient;
