@@ -2,6 +2,20 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 't
 import { Guru } from '../guru/guru.entity'; // Assuming Guru entity exists
 import { Siswa } from '../siswa/siswa.entity'; // Assuming Siswa entity exists
 
+export enum AbsensiSiswaStatus {
+  HADIR = 'hadir',
+  IZIN = 'izin',
+  SAKIT = 'sakit',
+  ALPHA = 'alpha',
+}
+
+export enum AbsensiGuruStatus {
+  HADIR = 'hadir',
+  IZIN = 'izin',
+  SAKIT = 'sakit',
+  DINAS_LUAR = 'dinas_luar',
+}
+
 @Entity('absensi_siswa')
 export class AbsensiSiswa {
   @PrimaryGeneratedColumn()
@@ -18,7 +32,7 @@ export class AbsensiSiswa {
   tanggal: Date;
 
   @Column({ type: 'enum', enum: ['hadir', 'izin', 'sakit', 'alpha'], nullable: false })
-  status: string;
+  status: AbsensiSiswaStatus;
 
   @Column({ type: 'time', nullable: true, name: 'jam_masuk' })
   jamMasuk: string;
@@ -62,7 +76,7 @@ export class AbsensiGuru {
   jamPulang: string;
 
   @Column({ type: 'enum', enum: ['hadir', 'izin', 'sakit', 'dinas_luar'], nullable: false })
-  status: string;
+  status: AbsensiGuruStatus;
 
   @Column({ type: 'text', nullable: true })
   keterangan: string;
