@@ -1,5 +1,5 @@
 // app/dashboard/DashboardClient.tsx
-'use client'
+'use client';
 
 import { SidebarSiswa } from "@/components/dashboard/sidebar-siswa"
 import { SidebarGuru } from "@/components/dashboard/sidebar-guru"
@@ -17,7 +17,7 @@ import data from "./data.json"
 import React, { useState, useEffect } from "react";
 
 const getRoleFromToken = (): string | null => {
-  if (typeof window !== 'undefined') {
+  
     const token = localStorage.getItem('access_token');
     if (token) {
       try {
@@ -28,28 +28,31 @@ const getRoleFromToken = (): string | null => {
         return null;
       }
     }
-  }
-  return null;
+  
+    return null;
 };
 
 export function DashboardClient() {
   const [CurrentSidebarComponent, setCurrentSidebarComponent] = useState<React.ComponentType<{ variant?: string; className?: string }> | null>(null);
 
   useEffect(() => {
-    const role = getRoleFromToken();
-    let selectedComponent: React.ComponentType;
+    if (typeof window !== 'undefined') {
+      const role = getRoleFromToken();
+      let selectedComponent: React.ComponentType;
 
-    if (role === "siswa") {
-      selectedComponent = SidebarSiswa;
-    } else if (role === "guru") {
-      selectedComponent = SidebarGuru;
-    } else if (role === "super_admin") {
-      selectedComponent = SidebarAdmin;
-    } else {
-      selectedComponent = SidebarGuru;
+      if (role === "siswa") {
+        selectedComponent = SidebarSiswa;
+      } else if (role === "guru") {
+        selectedComponent = SidebarGuru;
+      } else if (role === "super_admin") {
+        selectedComponent = SidebarAdmin;
+      } else {
+        selectedComponent = SidebarGuru;
+      }
+      
+
+      setCurrentSidebarComponent(() => selectedComponent);
     }
-
-    setCurrentSidebarComponent(() => selectedComponent);
   }, []);
 
   return (

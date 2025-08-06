@@ -22,8 +22,13 @@ export default function Home() {
   }, [router])
 
   if (loading) {
-    return <p>Redirecting...</p> // Atau spinner jika mau
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-gray-500">Mengalihkan halaman...</p>
+      </div>
+    )
   }
+
 
   return null
 }
