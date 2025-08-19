@@ -89,6 +89,8 @@ jobs:
           context: ./frontend
           file: ./frontend/dev.Dockerfile
           push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ env.DOCKERHUB_USERNAME }}/sekolah-frontend:latest
       - name: Trigger Portainer Webhook for Backend
         run: curl -X POST ${{ env.PORTAINER_BACKEND_WEBHOOK }}
       - name: Trigger Portainer Webhook for Frontend
