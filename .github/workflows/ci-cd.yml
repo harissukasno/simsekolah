@@ -11,6 +11,8 @@ on:
 env:
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+  PORTAINER_BACKEND_WEBHOOK: ${{ secrets.PORTAINER_BACKEND_WEBHOOK }}
+  PORTAINER_FRONTEND_WEBHOOK: ${{ secrets.PORTAINER_FRONTEND_WEBHOOK }}
 
 jobs:
   build-and-test-frontend:
@@ -79,6 +81,7 @@ jobs:
           context: ./backend
           file: ./backend/dev.Dockerfile
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ env.DOCKERHUB_USERNAME }}/sekolah-backend:latest
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
@@ -86,4 +89,7 @@ jobs:
           context: ./frontend
           file: ./frontend/dev.Dockerfile
           push: true
-          tags: ${{ env.DOCKERHUB_USERNAME }}/sekolah-frontend:latest
+      - name: Trigger Portainer Webhook for Backend
+        run: curl -X POST ${{ env.PORTAINER_BACKEND_WEBHOOK }}
+      - name: Trigger Portainer Webhook for Frontend
+        run: curl -X POST ${{ env.PORTAINER_FRONTEND_WEBHOOK }}      
