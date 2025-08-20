@@ -7,6 +7,7 @@ import { SiswaModule } from './siswa/siswa.module';
 import { GuruModule } from './guru/guru.module';
 import { KelasModule } from './kelas/kelas.module';
 import { AbsensiModule } from './absensi/absensi.module';
+import { UjianModule } from './ujian/ujian.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { AbsensiModule } from './absensi/absensi.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    UsersModule, AuthModule, SiswaModule, GuruModule, KelasModule, AbsensiModule,
+    UsersModule, AuthModule, SiswaModule, GuruModule, KelasModule, AbsensiModule, UjianModule,
   ],
   controllers: [],
   providers: [],
