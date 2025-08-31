@@ -53,6 +53,12 @@ jobs:
       - name: Wait for MySQL
         run: sleep 30
       - name: Run tests
+        env:
+            DB_HOST: universal_mysql   # <─ ini penting: pakai nama service
+            DB_PORT: 3306
+            DB_USER: root
+            DB_PASS: root
+            DB_NAME: simsekolah
         run: npm run test # configure with Jest/Supertest
       - name: Build app
         run: npm run build
