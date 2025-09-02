@@ -29,7 +29,7 @@ export function LoginForm({
     const username = formData.username.value;
     const password_hash = formData.password.value;
     try {        
-        const response = await fetch(`http://localhost:4000/auth/login`, {
+        const response = await fetch(`${process.env.SERVER_API_URL}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
