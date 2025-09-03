@@ -38,7 +38,7 @@ export function NavUser({
   const handleLogout = async() => {    
     try {   
       const token = localStorage.getItem('access_token');           
-      const response = await fetch(`${process.env.SERVER_API_URL}/auth/logout`, {
+      const response = await fetch(`${process.env.SERVER_API_KEY}/auth/logout`, {
           method: 'POST',            
           headers: {              
               'Authorization': `Bearer ${token}`,
